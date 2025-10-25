@@ -6,6 +6,7 @@
 # dire    -> nav layer: w/a/s/d ->up/left/down/right
 # control     -> nav layer: capslock -> lctrl
 # home-end    -> nav layer: q/e -> home/end
+# fmap    -> nav layer: 1-= -> f1-f12
 
 set -euo pipefail
 
@@ -13,6 +14,7 @@ SPACE_LAYER=0
 DIRE_MAP=0
 CTRL_CAPS=0
 HOME_END=0
+F_MAP=0
 
 while (( "$#" )); do
     case "$1" in
@@ -23,6 +25,7 @@ while (( "$#" )); do
                 dire) DIRE_MAP=1 ;;
                 control) CTRL_CAPS=1 ;;
                 home-end) HOME_END=1 ;;
+                fmap) F_MAP=1 ;;
                 *) echo "Unknown token: $tok"; exit 1 ;;
             esac
             ;;
@@ -36,7 +39,7 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-CONFIG="[id]
+CONFIG="[ids]
 
 *
 
@@ -66,6 +69,22 @@ fi
 if [[ $HOME_END -eq 1 ]]; then
     CONFIG+="q=home
 e=end
+"
+fi
+
+if [[ $F_MAP -eq 1 ]]; then
+    CONFIG+="1=f1
+2=f2
+3=f3
+4=f4
+5=f5
+6=f6
+7=f7
+8=f8
+9=f9
+0=f10
+-=f11
+==f12
 "
 fi
 
